@@ -2,6 +2,7 @@ package com.example.damn_jmhg_examenll
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
@@ -56,12 +57,19 @@ class MainActivity : AppCompatActivity() {
         adapterUser.setOnItemClickListener(object : AdapterRecyclerUser.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 Toast.makeText(this@MainActivity, "Click en ${adapterUser.users[position].name}", Toast.LENGTH_LONG).show()
+                val intentPosts = Intent(this@MainActivity, PostsActivity::class.java)
+                intentPosts.putExtra("id", adapterUser.users[position].id)
+                startActivity(intentPosts)
             }
 
             override fun onLongItemClick(position: Int) {
                 Toast.makeText(this@MainActivity, "LongClick en ${adapterUser.users[position].name}", Toast.LENGTH_LONG).show()
             }
         })
+
+        ibRegresarUsuarios.setOnClickListener {
+            finish()
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
