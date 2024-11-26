@@ -1,6 +1,7 @@
 package com.example.damn_jmhg_examenll
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
@@ -47,6 +48,9 @@ class PostsActivity : AppCompatActivity() {
         adapterPost.setOnItemClickListener(object : AdapterRecylerPost.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 //Toast.makeText(this@MainActivity, "Click en ${adapterUser.users[position].name}", Toast.LENGTH_LONG).show()
+                val intentComments = Intent(this@PostsActivity, CommentActivity::class.java)
+                intentComments.putExtra("postId", adapterPost.posts[position].id)
+                startActivity(intentComments)
             }
         })
 
