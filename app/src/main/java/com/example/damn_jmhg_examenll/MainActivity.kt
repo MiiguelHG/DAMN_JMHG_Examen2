@@ -15,19 +15,28 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.damn_jmhg_examenll.api.entities.UserEntity
 import com.example.damn_jmhg_examenll.api.repositories.UserRepository
+import com.example.damn_jmhg_examenll.room.data.UserDatabase
+import com.example.damn_jmhg_examenll.room.entities.Address
+import com.example.damn_jmhg_examenll.room.entities.Company
+import com.example.damn_jmhg_examenll.room.entities.Geo
+import com.example.damn_jmhg_examenll.room.entities.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
     private val userRepository = UserRepository()
+    private lateinit var db: UserDatabase
 
     lateinit var ibRegresarUsuarios: ImageButton;
     lateinit var rvUsuarios: RecyclerView;
 
     private lateinit var adapterUser: AdapterRecyclerUser;
+    private lateinit var adapterUserRoom: AdapterRecyclerUserRoom;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,19 +48,27 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        db = UserDatabase.getInstance(this)
+
         ibRegresarUsuarios = findViewById(R.id.ibRegresarUsuariosWifi)
         rvUsuarios = findViewById(R.id.rvUsuariosWifi)
 
+        // Para obtener los usuarios de la API
         adapterUser = AdapterRecyclerUser(emptyList())
 
-        rvUsuarios.adapter = adapterUser
+
+        // Para obtener los usuarios de la base de datos
+        adapterUserRoom = AdapterRecyclerUserRoom(emptyList())
+
         rvUsuarios.layoutManager = LinearLayoutManager(this)
 
         if (isNetworkAvailable()) {
+            rvUsuarios.adapter = adapterUser
             obtenerUsuarios()
         } else {
-            Log.d("Network", "No hay conexión a internet")
+            rvUsuarios.adapter = adapterUserRoom
             Toast.makeText(this, "No hay conexión a internet", Toast.LENGTH_LONG).show()
+            obtenerUsuariosRoom()
         }
 
         adapterUser.setOnItemClickListener(object : AdapterRecyclerUser.OnItemClickListener {
@@ -63,12 +80,94 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onLongItemClick(position: Int) {
-                Toast.makeText(this@MainActivity, "LongClick en ${adapterUser.users[position].name}", Toast.LENGTH_LONG).show()
+                // Toast.makeText(this@MainActivity, "LongClick en ${adapterUser.users[position].name}", Toast.LENGTH_LONG).show()
+                guardarUsuarioRoom(adapterUser.users[position])
+            }
+        })
+
+        adapterUserRoom.setOnItemClickListener(object : AdapterRecyclerUserRoom.OnItemClickListener {
+            override fun onLongItemClick(position: Int) {
+                //Toast.makeText(this@MainActivity, "LongClick en ${adapterUserRoom.users[position].name}", Toast.LENGTH_LONG).show()
+                CoroutineScope(Dispatchers.IO).launch {
+                    db.userDao().delete(adapterUserRoom.users[position])
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@MainActivity, "Usuario eliminado de la base de datos", Toast.LENGTH_LONG).show()
+                    }
+                }
+                adapterUserRoom.notifyDataSetChanged()
             }
         })
 
         ibRegresarUsuarios.setOnClickListener {
             finish()
+        }
+    }
+
+    private fun guardarUsuarioRoom(userEntity: UserEntity) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val user = db.userDao().getById(userEntity.id).firstOrNull()
+                if (user != null) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@MainActivity, "El usuario ya existe en la base de datos", Toast.LENGTH_LONG).show()
+                    }
+                } else {
+                    val newGeo = Geo(
+                        lat = userEntity.address.geo.lat,
+                        lng = userEntity.address.geo.lng
+                    )
+
+                    val newAddress = Address(
+                        street = userEntity.address.street,
+                        suite = userEntity.address.suite,
+                        city = userEntity.address.city,
+                        zipcode = userEntity.address.zipcode,
+                        geo = newGeo
+                    )
+
+                    val newCompany = Company(
+                        nameCompany = userEntity.company.name,
+                        catchPhrase = userEntity.company.catchPhrase,
+                        bs = userEntity.company.bs
+                    )
+                    val newUser = User(
+                        id = userEntity.id,
+                        name = userEntity.name,
+                        username = userEntity.username,
+                        email = userEntity.email,
+                        phone = userEntity.phone,
+                        website = userEntity.website,
+                        address = newAddress,
+                        company = newCompany
+                    )
+                    withContext(Dispatchers.Main) {
+                        db.userDao().add(newUser)
+                        Toast.makeText(this@MainActivity, "Usuario guardado en la base de datos", Toast.LENGTH_LONG).show()
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@MainActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                    Log.e("Error", e.message.toString())
+                }
+            }
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun obtenerUsuariosRoom() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val usuarios = db.userDao().getAll().collect { userList ->
+                    withContext(Dispatchers.Main) {
+                        adapterUserRoom.users = userList
+                        adapterUserRoom.notifyDataSetChanged()
+                    }
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@MainActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                Log.e("Error", e.message.toString())
+            }
         }
     }
 
