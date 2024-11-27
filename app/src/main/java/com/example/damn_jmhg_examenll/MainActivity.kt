@@ -8,6 +8,7 @@ import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -52,6 +53,7 @@ class MainActivity : AppCompatActivity() {
 
         ibRegresarUsuarios = findViewById(R.id.ibRegresarUsuariosWifi)
         rvUsuarios = findViewById(R.id.rvUsuariosWifi)
+        val tvNoInternet: TextView = findViewById(R.id.tvNoInternet)
 
         // Para obtener los usuarios de la API
         adapterUser = AdapterRecyclerUser(emptyList())
@@ -64,9 +66,11 @@ class MainActivity : AppCompatActivity() {
 
         if (isNetworkAvailable()) {
             rvUsuarios.adapter = adapterUser
+            tvNoInternet.visibility = TextView.GONE
             obtenerUsuarios()
         } else {
             rvUsuarios.adapter = adapterUserRoom
+            tvNoInternet.visibility = TextView.VISIBLE
             Toast.makeText(this, "No hay conexión a internet", Toast.LENGTH_LONG).show()
             obtenerUsuariosRoom()
         }

@@ -22,6 +22,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/flechaizquierda" />
 
+    <TextView
+        android:id="@+id/tvNoInternet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/red"
+        android:textColor="@color/white"
+        android:padding="8dp"
+        android:text="No hay conexión a internet"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/ibRegresarUsuariosWifi"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/rvUsuariosWifi"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvUsuariosWifi"
         android:layout_width="match_parent"
@@ -29,8 +43,8 @@
         android:background="@color/gray_light"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ibRegresarUsuariosWifi" />
+        app:layout_constraintTop_toBottomOf="@id/tvNoInternet"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
