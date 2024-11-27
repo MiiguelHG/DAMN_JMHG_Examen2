@@ -73,9 +73,10 @@ class MainActivity : AppCompatActivity() {
 
         adapterUser.setOnItemClickListener(object : AdapterRecyclerUser.OnItemClickListener {
             override fun onItemClick(position: Int) {
-                Toast.makeText(this@MainActivity, "Click en ${adapterUser.users[position].name}", Toast.LENGTH_LONG).show()
+//                Toast.makeText(this@MainActivity, "Click en ${adapterUser.users[position].name}", Toast.LENGTH_LONG).show()
                 val intentPosts = Intent(this@MainActivity, PostsActivity::class.java)
                 intentPosts.putExtra("id", adapterUser.users[position].id)
+                intentPosts.putExtra("name", adapterUser.users[position].name)
                 startActivity(intentPosts)
             }
 

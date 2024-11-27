@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -21,9 +22,11 @@ class PostsActivity : AppCompatActivity() {
 
     lateinit var ibRegresarPosts: ImageButton;
     lateinit var rvPosts: RecyclerView;
+    lateinit var tvUserPosts: TextView;
 
     private lateinit var adapterPost: AdapterRecylerPost;
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -35,12 +38,16 @@ class PostsActivity : AppCompatActivity() {
         }
 
         ibRegresarPosts = findViewById(R.id.ibRegresarPosts)
+        tvUserPosts = findViewById(R.id.tvUserPosts)
         rvPosts = findViewById(R.id.rvPosts)
 
         adapterPost = AdapterRecylerPost(emptyList())
 
         rvPosts.adapter = adapterPost
         rvPosts.layoutManager = LinearLayoutManager(this)
+
+        val name = intent?.extras?.getString("name")
+        tvUserPosts.setText("$name posts")
 
         val id = intent?.extras?.getLong("id")
         obtenerPosts(id!!)

@@ -1,77 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
 
-    <TextView
-        android:id="@+id/tvName"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="Nombre"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:gravity="center"/>
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:padding="8dp">
 
-    <TextView
-        android:id="@+id/tvUsername"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="8dp"
-        android:text="Usuario"
-        android:textColor="@color/black"
-        android:textSize="18sp" />
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center"/>
 
-    <TextView
-        android:id="@+id/tvEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="8dp"
-        android:text="Correo"
-        android:textColor="@color/black"
-        android:textSize="18sp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray" />
 
-    <TextView
-        android:id="@+id/tvAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="8dp"
-        android:text="Dirección"
-        android:textSize="18sp"
-        android:textColor="@color/black"
-        android:singleLine="false"
-        android:ellipsize="none" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/tvPhone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="8dp"
-        android:text="Teléfono"
-        android:textColor="@color/black"
-        android:textSize="18sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Username: "
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
 
-    <TextView
-        android:id="@+id/tvWebsite"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="8dp"
-        android:text="Sitio Web"
-        android:textColor="@color/black"
-        android:textSize="18sp" />
+            <TextView
+                android:id="@+id/tvUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Usuario"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvCompany"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="8dp"
-        android:text="Compañía"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:singleLine="false"
-        android:ellipsize="none"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email: "
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/tvEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Correo"
+                android:textColor="@color/link"
+                android:textStyle="italic"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Address: "
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tvAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dirección"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:singleLine="false"
+                android:ellipsize="none" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Phone: "
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tvPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Teléfono"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Website: "
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tvWebsite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sitio Web"
+                android:textColor="@color/link"
+                android:textStyle="italic"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Company: "
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tvCompany"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Compañía"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:singleLine="false"
+                android:ellipsize="none"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
